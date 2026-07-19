@@ -2535,12 +2535,19 @@
     });
 
     // ========== TYPING EFFECT ==========
-    const roles = ['AI Agents Specialist', 'Mathematician', 'Python Developer', 'Robotics Enthusiast'];
+    const roles = [
+        ['AI Agents Specialist', 'Mathematician'],
+        ['Python Developer', 'Mathematician'],
+        ['Mathematician', 'AI Agents Specialist'],
+        ['Robotics Enthusiast', 'AI Agents Specialist']
+    ];
     let roleIndex = 0, charIndex = 0, isDeleting = false;
-    const typedEl = document.querySelector('.hero-subtitle strong');
+    const typedEls = document.querySelectorAll('.hero-subtitle strong');
+    const typedEl = typedEls[0];
+    const secondEl = typedEls[1];
 
     function typeEffect() {
-        const current = roles[roleIndex];
+        const current = roles[roleIndex][0];
         if (isDeleting) {
             typedEl.textContent = current.substring(0, charIndex--);
         } else {
@@ -2548,6 +2555,7 @@
         }
 
         if (!isDeleting && charIndex === current.length + 1) {
+            secondEl.textContent = roles[roleIndex][1];
             setTimeout(() => { isDeleting = true; typeEffect(); }, 2000);
             return;
         }

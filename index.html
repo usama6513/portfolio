@@ -522,6 +522,7 @@
             backdrop-filter: blur(10px);
             animation: floatTag 3s ease-in-out infinite;
             white-space: nowrap;
+            z-index: 10;
         }
 
         .tag-1 { top: -5%; right: -5px; animation-delay: 0s; }
@@ -1323,6 +1324,10 @@
                 font-size: 0.6rem;
                 padding: 5px 10px;
             }
+
+            .tag-1 { top: -5%; right: 5px; }
+            .tag-2 { bottom: 5%; left: 5px; }
+            .tag-3 { top: 42%; left: 5px; }
 
             .hero {
                 padding: 6rem 1.2rem 2rem;

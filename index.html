@@ -1,0 +1,2927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usama Sharif | AI Agents Specialist & Mathematician</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00f0ff;
+            --secondary: #7b2ff7;
+            --accent: #ff2d75;
+            --bg-deep: #0a0a0f;
+            --bg-card: #12121a;
+            --bg-card-hover: #1a1a2e;
+            --text-primary: #e8e8f0;
+            --text-secondary: #8888a0;
+            --gradient-1: linear-gradient(135deg, #00f0ff, #7b2ff7);
+            --gradient-2: linear-gradient(135deg, #7b2ff7, #ff2d75);
+            --gradient-3: linear-gradient(135deg, #ff2d75, #ff8c00);
+            --glow-cyan: 0 0 30px rgba(0, 240, 255, 0.3);
+            --glow-purple: 0 0 30px rgba(123, 47, 247, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        /* ========== ANIMATED BACKGROUND ========== */
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+
+        .floating-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatOrb 20s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--primary);
+            top: -100px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--secondary);
+            bottom: -50px;
+            left: -50px;
+            animation-delay: -7s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            top: 50%;
+            left: 50%;
+            animation-delay: -14s;
+        }
+
+        @keyframes floatOrb {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(50px, -30px) scale(1.1); }
+            50% { transform: translate(-30px, 50px) scale(0.9); }
+            75% { transform: translate(30px, 30px) scale(1.05); }
+        }
+
+        /* ========== CURSOR GLOW ========== */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.08), transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+        }
+
+        /* ========== CURSOR RING ========== */
+        .cursor-ring {
+            position: fixed;
+            width: 45px;
+            height: 45px;
+            border: 2px solid var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.2s ease, height 0.2s ease, border-color 0.3s ease, opacity 0.3s ease;
+            opacity: 0.7;
+            mix-blend-mode: screen;
+        }
+
+        .cursor-ring.hover-active {
+            width: 65px;
+            height: 65px;
+            border-color: var(--accent);
+            opacity: 1;
+            border-width: 2.5px;
+        }
+
+        .cursor-dot {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: width 0.15s ease, height 0.15s ease, background 0.3s ease;
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .cursor-dot.hover-active {
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .cursor-ring, .cursor-dot { display: none; }
+        }
+
+        /* ========== NAVBAR ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            backdrop-filter: blur(20px);
+            background: rgba(10, 10, 15, 0.8);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .navbar.scrolled {
+            padding: 0.6rem 2rem;
+            background: rgba(10, 10, 15, 0.95);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo span {
+            color: var(--accent);
+            -webkit-text-fill-color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .hamburger span {
+            width: 28px;
+            height: 2px;
+            background: var(--primary);
+            transition: all 0.3s;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            padding: 0 2rem;
+        }
+
+        .hero-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s ease infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .hero-title .line-1 {
+            color: var(--text-secondary);
+            font-size: 0.45em;
+            font-weight: 400;
+            display: block;
+            margin-bottom: 0.3rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hero-title .name {
+            display: block;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            animation: fadeInUp 0.8s ease 0.4s both;
+        }
+
+        .hero-subtitle strong {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.6s both;
+        }
+
+        .btn {
+            padding: 14px 32px;
+            border-radius: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: var(--bg-deep);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid rgba(0, 240, 255, 0.3);
+        }
+
+        .btn-outline:hover {
+            background: rgba(0, 240, 255, 0.08);
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Hero Image */
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            animation: fadeInUp 1s ease 0.5s both;
+        }
+
+        .profile-frame {
+            position: relative;
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, transparent 70%);
+        }
+
+        .profile-frame::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border-radius: 30px;
+            background: var(--gradient-1);
+            z-index: -1;
+            animation: rotateGradient 4s linear infinite;
+        }
+
+        @keyframes rotateGradient {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* Profile image — original photo only, no face effects */
+        .profile-img-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 28px;
+            overflow: hidden;
+            border: 4px solid var(--bg-deep);
+            z-index: 1;
+            background:
+                radial-gradient(circle at 30% 20%, rgba(0, 240, 255, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(123, 47, 247, 0.25) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(255, 45, 117, 0.1) 0%, transparent 60%),
+                linear-gradient(135deg, #0a0a1a 0%, #12121a 50%, #0a0a1a 100%);
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+            border: none;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        /* Laser scan line only (does not alter face color/clarity) */
+        .scan-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            box-shadow: 0 0 10px var(--primary), 0 0 20px var(--primary);
+            z-index: 4;
+            pointer-events: none;
+            animation: scan 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            opacity: 0.85;
+        }
+
+        @keyframes scan {
+            0% { top: 0%; }
+            50% { top: 100%; }
+            100% { top: 0%; }
+        }
+
+        .orbit-ring {
+            position: absolute;
+            border: 1px dashed rgba(0, 240, 255, 0.15);
+            border-radius: 50%;
+            animation: spin 25s linear infinite;
+        }
+
+        .orbit-1 {
+            width: 450px;
+            height: 450px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .orbit-2 {
+            width: 520px;
+            height: 520px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-direction: reverse;
+            animation-duration: 35s;
+        }
+
+        .orbit-dot {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--primary);
+            box-shadow: 0 0 10px var(--primary);
+        }
+
+        .orbit-1 .orbit-dot { top: 0; left: 50%; transform: translate(-50%, -50%); }
+        .orbit-2 .orbit-dot { bottom: 0; right: 0; transform: translate(50%, 50%); }
+
+        @keyframes spin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .floating-tag {
+            position: absolute;
+            padding: 8px 16px;
+            background: rgba(18, 18, 26, 0.9);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--primary);
+            backdrop-filter: blur(10px);
+            animation: floatTag 3s ease-in-out infinite;
+            white-space: nowrap;
+        }
+
+        .tag-1 { top: 10%; right: -30px; animation-delay: 0s; }
+        .tag-2 { bottom: 15%; left: -40px; animation-delay: -1s; }
+        .tag-3 { top: 45%; left: -60px; animation-delay: -2s; }
+
+        @keyframes floatTag {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* ========== SECTION COMMON ========== */
+        section {
+            position: relative;
+            z-index: 2;
+            padding: 6rem 2rem;
+        }
+
+        .section-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-title .highlight {
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-desc {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ========== ABOUT ========== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-content p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 1.5rem;
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 240, 255, 0.08);
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(0, 240, 255, 0.2);
+            transform: translateY(-3px);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .about-visual {
+            position: relative;
+        }
+
+        .tech-orbit {
+            width: 100%;
+            max-width: 450px;
+            aspect-ratio: 1;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .tech-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 120px;
+            height: 120px;
+            background: var(--gradient-1);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: var(--glow-cyan);
+        }
+
+        .tech-item {
+            position: absolute;
+            width: 65px;
+            height: 65px;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .tech-item:hover {
+            transform: scale(1.15);
+            border-color: var(--primary);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .tech-item:nth-child(2) { top: 5%; left: 50%; transform: translateX(-50%); }
+        .tech-item:nth-child(3) { top: 25%; right: 5%; }
+        .tech-item:nth-child(4) { bottom: 25%; right: 5%; }
+        .tech-item:nth-child(5) { bottom: 5%; left: 50%; transform: translateX(-50%); }
+        .tech-item:nth-child(6) { bottom: 25%; left: 5%; }
+        .tech-item:nth-child(7) { top: 25%; left: 5%; }
+
+        /* ========== SKILLS ========== */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 240, 255, 0.06);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient-1);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s;
+        }
+
+        .skill-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .skill-card:hover {
+            border-color: rgba(0, 240, 255, 0.15);
+            transform: translateY(-5px);
+            background: var(--bg-card-hover);
+        }
+
+        .skill-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .skill-icon.cyan { background: rgba(0, 240, 255, 0.1); color: var(--primary); }
+        .skill-icon.purple { background: rgba(123, 47, 247, 0.1); color: var(--secondary); }
+        .skill-icon.pink { background: rgba(255, 45, 117, 0.1); color: var(--accent); }
+        .skill-icon.orange { background: rgba(255, 140, 0, 0.1); color: #ff8c00; }
+
+        .skill-card h3 {
+            font-size: 1.15rem;
+            margin-bottom: 0.7rem;
+            font-weight: 600;
+        }
+
+        .skill-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 1rem;
+        }
+
+        .skill-tags span {
+            padding: 4px 12px;
+            background: rgba(0, 240, 255, 0.06);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            border-radius: 100px;
+            font-size: 0.72rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ========== PROJECTS ========== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 240, 255, 0.06);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s;
+            position: relative;
+        }
+
+        .project-card:hover {
+            border-color: rgba(0, 240, 255, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .project-preview {
+            height: 200px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Light dark overlay — keep project background images clearly visible */
+        .project-image-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 10, 15, 0.28);
+            z-index: 1;
+            transition: background 0.3s ease;
+        }
+
+        .project-card:hover .project-image-overlay {
+            background: rgba(10, 10, 15, 0.15);
+        }
+
+        .project-gradient {
+            position: absolute;
+            inset: 0;
+            opacity: 0.18; /* Light tint only — photo stays clear */
+            background-size: cover;
+            background-position: center;
+            z-index: 2;
+            transition: all 0.4s ease;
+            mix-blend-mode: soft-light;
+        }
+
+        .project-card:hover .project-gradient {
+            opacity: 0.28;
+            transform: scale(1.05);
+        }
+
+        /* Styled glass backdrop to make the emoji icons stand out against images */
+        .project-preview .project-icon {
+            font-size: 2.8rem;
+            position: relative;
+            z-index: 3; /* Above gradient overlay */
+            background: rgba(10, 10, 15, 0.75);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .project-card:hover .project-icon {
+            transform: scale(1.1);
+            border-color: var(--primary);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.4), inset 0 0 15px rgba(0, 240, 255, 0.2);
+        }
+
+        .project-preview-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(10, 10, 15, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 5;
+        }
+
+        .project-card:hover .project-preview-overlay {
+            opacity: 1;
+        }
+
+        .preview-btn {
+            padding: 10px 24px;
+            background: var(--gradient-1);
+            color: var(--bg-deep);
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transform: translateY(10px);
+            transition: transform 0.3s;
+        }
+
+        .project-card:hover .preview-btn {
+            transform: translateY(0);
+        }
+
+        .preview-btn.code {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid rgba(0, 240, 255, 0.4);
+        }
+
+        .project-card:hover .preview-btn.code {
+            transform: translateY(0);
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-type {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .project-info p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .project-tech span {
+            padding: 4px 10px;
+            font-size: 0.7rem;
+            background: rgba(123, 47, 247, 0.1);
+            border: 1px solid rgba(123, 47, 247, 0.15);
+            border-radius: 6px;
+            color: #b388ff;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ========== EXPERIENCE TIMELINE ========== */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--secondary), var(--accent));
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            justify-content: flex-start;
+            padding-right: calc(50% + 30px);
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) {
+            justify-content: flex-end;
+            padding-left: calc(50% + 30px);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            top: 20px;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: 3px solid var(--bg-deep);
+            box-shadow: 0 0 15px var(--primary);
+            z-index: 2;
+        }
+
+        .timeline-content {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 240, 255, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .timeline-content:hover {
+            border-color: rgba(0, 240, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        .timeline-date {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        /* ========== CONTACT ========== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 240, 255, 0.08);
+            border-radius: 14px;
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .contact-link:hover {
+            border-color: var(--primary);
+            transform: translateX(5px);
+            background: var(--bg-card-hover);
+        }
+
+        .contact-link i {
+            font-size: 1.3rem;
+            color: var(--primary);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 240, 255, 0.08);
+            border-radius: 10px;
+        }
+
+        .contact-link .link-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .contact-link .link-value {
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        .contact-form {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 240, 255, 0.08);
+            border-radius: 24px;
+            padding: 2.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 240, 255, 0.03);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .social-bar {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .social-icon:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--glow-cyan);
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(0, 240, 255, 0.06);
+        }
+
+        footer p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        footer .heart {
+            color: var(--accent);
+        }
+
+        /* ========== SCROLL ANIMATIONS ========== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== PARTICLES ========== */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: var(--primary);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0;
+            animation: particleFloat 8s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 1024px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .profile-frame {
+                width: 280px;
+                height: 280px;
+            }
+
+            .orbit-1 { width: 340px; height: 340px; }
+            .orbit-2 { width: 400px; height: 400px; }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-preview-overlay {
+                opacity: 1;
+                background: rgba(10, 10, 15, 0.5);
+            }
+
+            .preview-btn {
+                transform: translateY(0);
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                justify-content: flex-start;
+                padding-left: 55px;
+                padding-right: 0;
+                text-align: left;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100vh;
+                background: rgba(10, 10, 15, 0.98);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2.5rem;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                font-size: 1.2rem;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .floating-tag {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 1.2rem 2rem;
+            }
+
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .hero-cta .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .profile-frame {
+                width: 220px;
+                height: 220px;
+            }
+
+            .orbit-1 { width: 270px; height: 270px; }
+            .orbit-2 { width: 320px; height: 320px; }
+
+            section {
+                padding: 3rem 1.2rem;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+            }
+
+            .about-stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.8rem;
+            }
+
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .project-preview {
+                height: 180px;
+            }
+
+            .project-preview-overlay {
+                opacity: 1;
+                background: rgba(10, 10, 15, 0.5);
+                flex-direction: row;
+                gap: 10px;
+            }
+
+            .preview-btn {
+                padding: 8px 16px;
+                font-size: 0.78rem;
+                transform: translateY(0);
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-form {
+                padding: 1.5rem;
+            }
+
+            .contact-info h3 {
+                font-size: 1.4rem;
+            }
+
+            .tech-orbit {
+                max-width: 300px;
+            }
+
+            .chatbot-window {
+                width: calc(100vw - 20px);
+                right: 10px;
+                bottom: 90px;
+                max-height: 70vh;
+            }
+
+            .chatbot-toggle {
+                bottom: 20px;
+                right: 20px;
+                width: 54px;
+                height: 54px;
+            }
+
+            footer p {
+                font-size: 0.78rem;
+            }
+        }
+
+        /* ========== TYPING EFFECT ========== */
+        .typed-text::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: var(--primary);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* ========== MARQUEE ========== */
+        .marquee-section {
+            overflow: hidden;
+            padding: 2.2rem 0;
+            border-top: 1px solid rgba(0, 240, 255, 0.12);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.12);
+            position: relative;
+            z-index: 2;
+            background: rgba(18, 18, 26, 0.4); /* Dark card backing background */
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 3.5rem;
+            animation: marquee 30s linear infinite;
+            width: max-content;
+            align-items: center;
+        }
+
+        .marquee-item {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.35); /* Increased default brightness */
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            white-space: nowrap;
+            font-family: 'JetBrains Mono', monospace;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+
+        .marquee-item:not(.marquee-dot):hover {
+            color: var(--primary); /* Intense cyan glow on text hover */
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+        }
+
+        .marquee-dot {
+            color: var(--accent) !important; /* Glowing pink bullet markers */
+            text-shadow: 0 0 8px var(--accent);
+            opacity: 0.7;
+        }
+
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+
+        /* Mobile Responsiveness for Marquee */
+        @media (max-width: 768px) {
+            .marquee-section {
+                padding: 1.2rem 0;
+                border-top-width: 1px;
+                border-bottom-width: 1px;
+            }
+            .marquee-track {
+                gap: 1.8rem;
+                animation-duration: 22s; /* Speed adjusted for narrower viewports */
+            }
+            .marquee-item {
+                font-size: 0.95rem; /* Scaled down layout for mobile */
+                letter-spacing: 2px;
+            }
+        }
+
+        /* ========== AI CHATBOT ========== */
+        .chatbot-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: var(--gradient-1);
+            border: none;
+            cursor: pointer;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+            color: var(--bg-deep);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.4);
+            transition: all 0.3s;
+            animation: chatPulse 3s ease-in-out infinite;
+        }
+
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(0, 240, 255, 0.6);
+        }
+
+        .chatbot-toggle.active {
+            animation: none;
+            background: var(--gradient-2);
+            box-shadow: 0 0 30px rgba(123, 47, 247, 0.4);
+        }
+
+        @keyframes chatPulse {
+            0%, 100% { box-shadow: 0 0 30px rgba(0, 240, 255, 0.4); }
+            50% { box-shadow: 0 0 50px rgba(0, 240, 255, 0.6), 0 0 80px rgba(0, 240, 255, 0.2); }
+        }
+
+        .chatbot-window {
+            position: fixed;
+            bottom: 105px;
+            right: 30px;
+            width: 400px;
+            max-height: 550px;
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            border-radius: 24px;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            animation: chatSlideUp 0.35s ease;
+        }
+
+        .chatbot-window.open {
+            display: flex;
+        }
+
+        @keyframes chatSlideUp {
+            from { opacity: 0; transform: translateY(20px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .chatbot-header {
+            padding: 1.2rem 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(123, 47, 247, 0.1));
+            border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chatbot-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .chatbot-header-info h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .chatbot-header-info p {
+            font-size: 0.7rem;
+            color: #00ff88;
+            font-family: 'JetBrains Mono', monospace;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .chatbot-header-info p .online-dot {
+            width: 6px;
+            height: 6px;
+            background: #00ff88;
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 2s ease infinite;
+        }
+
+        .chatbot-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 370px;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 240, 255, 0.2) transparent;
+        }
+
+        .chatbot-messages::-webkit-scrollbar { width: 4px; }
+        .chatbot-messages::-webkit-scrollbar-track { background: transparent; }
+        .chatbot-messages::-webkit-scrollbar-thumb { background: rgba(0, 240, 255, 0.2); border-radius: 10px; }
+
+        .chat-msg {
+            max-width: 85%;
+            padding: 10px 16px;
+            border-radius: 16px;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            word-wrap: break-word;
+        }
+
+        .chat-msg.bot {
+            align-self: flex-start;
+            background: rgba(0, 240, 255, 0.08);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            border-bottom-left-radius: 4px;
+            color: var(--text-primary);
+        }
+
+        .chat-msg.user {
+            align-self: flex-end;
+            background: var(--gradient-1);
+            color: var(--bg-deep);
+            border-bottom-right-radius: 4px;
+            font-weight: 500;
+        }
+
+        .chat-msg.bot .msg-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+        }
+
+        .chat-msg.bot .msg-links a {
+            padding: 4px 10px;
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.72rem;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.2s;
+        }
+
+        .chat-msg.bot .msg-links a:hover {
+            background: rgba(0, 240, 255, 0.2);
+        }
+
+        .chat-typing {
+            display: flex;
+            gap: 4px;
+            padding: 10px 16px;
+            align-self: flex-start;
+        }
+
+        .chat-typing span {
+            width: 7px;
+            height: 7px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: typingBounce 1.4s ease-in-out infinite;
+        }
+
+        .chat-typing span:nth-child(2) { animation-delay: 0.2s; }
+        .chat-typing span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        .chatbot-input {
+            padding: 1rem 1.2rem;
+            border-top: 1px solid rgba(0, 240, 255, 0.1);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 12px 16px;
+            background: rgba(0, 240, 255, 0.04);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.88rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .chatbot-input input:focus {
+            border-color: var(--primary);
+        }
+
+        .chatbot-input button {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--gradient-1);
+            border: none;
+            color: var(--bg-deep);
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            flex-shrink: 0;
+        }
+
+        .chatbot-input button:hover {
+            transform: scale(1.05);
+            box-shadow: var(--glow-cyan);
+        }
+
+        .chat-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding: 0 1.2rem 0.8rem;
+        }
+
+        .chat-suggestions button {
+            padding: 6px 14px;
+            background: rgba(123, 47, 247, 0.1);
+            border: 1px solid rgba(123, 47, 247, 0.2);
+            border-radius: 100px;
+            color: #b388ff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.68rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chat-suggestions button:hover {
+            background: rgba(123, 47, 247, 0.2);
+            border-color: var(--secondary);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 480px) {
+            .chatbot-window {
+                width: calc(100vw - 20px);
+                right: 10px;
+                bottom: 90px;
+                max-height: 70vh;
+            }
+            .chatbot-toggle {
+                bottom: 20px;
+                right: 20px;
+                width: 54px;
+                height: 54px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Background Effects -->
+<div class="bg-grid"></div>
+<div class="floating-orb orb-1"></div>
+<div class="floating-orb orb-2"></div>
+<div class="floating-orb orb-3"></div>
+<div class="cursor-glow" id="cursorGlow"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- Particles -->
+<div id="particles"></div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+    <div class="nav-content">
+        <div class="nav-logo">US<span>.</span>dev</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#home" onclick="closeMenu()">Home</a></li>
+            <li><a href="#about" onclick="closeMenu()">About</a></li>
+            <li><a href="#skills" onclick="closeMenu()">Skills</a></li>
+            <li><a href="#projects" onclick="closeMenu()">Projects</a></li>
+            <li><a href="#journey" onclick="closeMenu()">Journey</a></li>
+            <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="home">
+    <div class="hero-container">
+        <div class="hero-text">
+            <div class="hero-badge">
+                <span class="dot"></span>
+                Available for Projects
+            </div>
+            <h1 class="hero-title">
+                <span class="line-1">Hi, I am</span>
+                <span class="name">Usama Sharif</span>
+            </h1>
+            <p class="hero-subtitle">
+                <strong>AI Agents Specialist</strong> & <strong>Mathematician</strong><br>
+                Building intelligent systems that think, learn & solve.
+            </p>
+            <div class="hero-cta">
+                <a href="#projects" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i> View Projects
+                </a>
+                <a href="#contact" class="btn btn-outline">
+                    <i class="fas fa-envelope"></i> Contact Me
+                </a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="profile-frame">
+                <div class="profile-img-container">
+                    <img src="profile.jpg" alt="Usama Sharif" class="profile-img">
+                    <div class="scan-line"></div>
+                </div>
+                <div class="orbit-ring orbit-1"><div class="orbit-dot"></div></div>
+                <div class="orbit-ring orbit-2"><div class="orbit-dot"></div></div>
+            </div>
+            <div class="floating-tag tag-1"><i class="fas fa-brain"></i>&nbsp; AI Agents</div>
+            <div class="floating-tag tag-2"><i class="fas fa-square-root-variable"></i>&nbsp; Math</div>
+            <div class="floating-tag tag-3"><i class="fas fa-code"></i>&nbsp; Python</div>
+        </div>
+    </div>
+</section>
+
+<!-- Marquee -->
+<div class="marquee-section">
+    <div class="marquee-track">
+        <span class="marquee-item">AI Agents</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Machine Learning</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Mathematics</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Python</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Streamlit</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Web Development</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Robotics</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">AI Agents</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Machine Learning</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Mathematics</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Python</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Streamlit</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Web Development</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+        <span class="marquee-item">Robotics</span>
+        <span class="marquee-item marquee-dot">&bull;</span>
+    </div>
+</div>
+
+<!-- About Section -->
+<section id="about">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-tag">// About Me</span>
+            <h2 class="section-title">Turning <span class="highlight">Ideas</span> into Intelligence</h2>
+        </div>
+        <div class="about-grid">
+            <div class="about-content reveal">
+                <p>
+                    I'm <strong style="color: var(--primary);">Usama Sharif</strong> &mdash; an AI Agents Specialist
+                    and Mathematician passionate about building intelligent, autonomous systems. I combine deep
+                    mathematical foundations with cutting-edge AI to create solutions that don't just work &mdash;
+                    they think.
+                </p>
+                <p>
+                    From developing AI-powered assignment solvers to authoring comprehensive courses on
+                    Physical AI & Humanoid Robotics, I'm on a mission to push the boundaries of what
+                    intelligent systems can achieve. With 67+ repositories on GitHub and multiple deployed
+                    applications, I turn complex problems into elegant solutions.
+                </p>
+                <div class="about-stats">
+                    <div class="stat-card">
+                        <div class="stat-number">67+</div>
+                        <div class="stat-label">Repositories</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">10+</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">13</div>
+                        <div class="stat-label">Week Course</div>
+                    </div>
+                </div>
+            </div>
+            <div class="about-visual reveal">
+                <div class="tech-orbit">
+                    <div class="tech-center"><i class="fas fa-robot"></i></div>
+                    <div class="tech-item" title="Python"><i class="fab fa-python"></i></div>
+                    <div class="tech-item" title="AI"><i class="fas fa-brain"></i></div>
+                    <div class="tech-item" title="Math"><i class="fas fa-square-root-variable"></i></div>
+                    <div class="tech-item" title="Web"><i class="fas fa-globe"></i></div>
+                    <div class="tech-item" title="Data"><i class="fas fa-database"></i></div>
+                    <div class="tech-item" title="Git"><i class="fab fa-github"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Section -->
+<section id="skills">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-tag">// Skills & Expertise</span>
+            <h2 class="section-title">What I <span class="highlight">Bring</span> to the Table</h2>
+            <p class="section-desc">A powerful blend of AI intelligence and mathematical precision</p>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-card reveal">
+                <div class="skill-icon cyan"><i class="fas fa-robot"></i></div>
+                <h3>AI Agents & Automation</h3>
+                <p>Building autonomous AI agents that can reason, plan, and execute complex tasks with minimal human intervention.</p>
+                <div class="skill-tags">
+                    <span>AI Agents</span>
+                    <span>LLMs</span>
+                    <span>Prompt Engineering</span>
+                    <span>Automation</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon purple"><i class="fas fa-square-root-variable"></i></div>
+                <h3>Mathematics & Computation</h3>
+                <p>Strong foundation in mathematics including calculus, linear algebra, statistics, and computational problem solving.</p>
+                <div class="skill-tags">
+                    <span>Calculus</span>
+                    <span>Linear Algebra</span>
+                    <span>Statistics</span>
+                    <span>Scientific Computing</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon pink"><i class="fab fa-python"></i></div>
+                <h3>Python Development</h3>
+                <p>Proficient in Python ecosystem for building web apps, data tools, calculators, and AI-powered applications.</p>
+                <div class="skill-tags">
+                    <span>Python</span>
+                    <span>Streamlit</span>
+                    <span>Pandas</span>
+                    <span>NumPy</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon orange"><i class="fas fa-code"></i></div>
+                <h3>Web Development</h3>
+                <p>Creating responsive, modern web applications using HTML, CSS, JavaScript, TypeScript, and Next.js framework.</p>
+                <div class="skill-tags">
+                    <span>HTML/CSS</span>
+                    <span>JavaScript</span>
+                    <span>TypeScript</span>
+                    <span>Next.js</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon cyan"><i class="fas fa-microchip"></i></div>
+                <h3>Robotics & Physical AI</h3>
+                <p>Expertise in ROS 2, Gazebo simulation, NVIDIA Isaac, humanoid robotics, and sim-to-real transfer techniques.</p>
+                <div class="skill-tags">
+                    <span>ROS 2</span>
+                    <span>Gazebo</span>
+                    <span>NVIDIA Isaac</span>
+                    <span>Humanoid Robotics</span>
+                </div>
+            </div>
+            <div class="skill-card reveal">
+                <div class="skill-icon purple"><i class="fas fa-graduation-cap"></i></div>
+                <h3>Technical Education</h3>
+                <p>Authoring comprehensive courses and textbooks on AI, robotics, and mathematics for the next generation.</p>
+                <div class="skill-tags">
+                    <span>Course Design</span>
+                    <span>Technical Writing</span>
+                    <span>Curriculum</span>
+                    <span>Mentoring</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Projects Section -->
+<section id="projects">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-tag">// Portfolio</span>
+            <h2 class="section-title">Featured <span class="highlight">Projects</span></h2>
+            <p class="section-desc">A collection of AI-powered tools, web apps, and educational resources</p>
+        </div>
+        <div class="projects-grid">
+            <!-- Project 1 -->
+            <div class="project-card reveal">
+                <div class="project-preview" style="background-image: url('https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=600&q=80');">
+                    <div class="project-image-overlay"></div>
+                    <div class="project-gradient" style="background: var(--gradient-1);"></div>
+                    <span class="project-icon">🤖</span>
+                    <div class="project-preview-overlay">
+                        <a href="https://assignment-solver-pink.vercel.app" target="_blank" class="preview-btn">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <span class="project-type">AI Application</span>
+                    <h3>AI Assignment Solver</h3>
+                    <p>An intelligent AI-powered tool that helps solve complex assignments using advanced language models and structured reasoning.</p>
+                    <div class="project-tech">
+                        <span>Next.js</span>
+                        <span>AI/LLM</span>
+                        <span>Vercel</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2 -->
+            <div class="project-card reveal">
+                <div class="project-preview" style="background-image: url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=600&q=80');">
+                    <div class="project-image-overlay"></div>
+                    <div class="project-gradient" style="background: var(--gradient-2);"></div>
+                    <span class="project-icon">📚</span>
+                    <div class="project-preview-overlay">
+                        <a href="https://usama6513.github.io/physical-ai-book/" target="_blank" class="preview-btn">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="https://github.com/usama6513/physical-ai-book" target="_blank" class="preview-btn code">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <span class="project-type">Educational Platform</span>
+                    <h3>Physical AI & Humanoid Robotics</h3>
+                    <p>A comprehensive 13-week online textbook covering ROS 2, simulation, NVIDIA Isaac, reinforcement learning, and humanoid robotics with 50+ code examples.</p>
+                    <div class="project-tech">
+                        <span>Docusaurus</span>
+                        <span>ROS 2</span>
+                        <span>NVIDIA Isaac</span>
+                        <span>RL</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3 -->
+            <div class="project-card reveal">
+                <div class="project-preview" style="background-image: url('https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=600&q=80');">
+                    <div class="project-image-overlay"></div>
+                    <div class="project-gradient" style="background: var(--gradient-3);"></div>
+                    <span class="project-icon">🔄</span>
+                    <div class="project-preview-overlay">
+                        <a href="https://usama-converter-unit-xba4b6a8y7dj6ybxhw2yqv.streamlit.app/" target="_blank" class="preview-btn">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="https://github.com/usama6513/Usama-Converter-unit" target="_blank" class="preview-btn code">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <span class="project-type">Utility Tool</span>
+                    <h3>Unit Converter</h3>
+                    <p>A sleek, fast unit conversion tool built with Python & Streamlit for converting between various measurement units instantly.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Streamlit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 4 -->
+            <div class="project-card reveal">
+                <div class="project-preview" style="background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80');">
+                    <div class="project-image-overlay"></div>
+                    <div class="project-gradient" style="background: linear-gradient(135deg, #00f0ff, #00ff88);"></div>
+                    <span class="project-icon">🔐</span>
+                    <div class="project-preview-overlay">
+                        <a href="https://password-uydk9gh8v4ynuphvvyzuak.streamlit.app/" target="_blank" class="preview-btn">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="https://github.com/usama6513/password" target="_blank" class="preview-btn code">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <span class="project-type">Security Tool</span>
+                    <h3>Password Generator</h3>
+                    <p>A secure, customizable password generator that creates strong, unbreakable passwords with various complexity options.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Streamlit</span>
+                        <span>Security</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 5 -->
+            <div class="project-card reveal">
+                <div class="project-preview" style="background-image: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=600&q=80');">
+                    <div class="project-image-overlay"></div>
+                    <div class="project-gradient" style="background: linear-gradient(135deg, #ff2d75, #7b2ff7);"></div>
+                    <span class="project-icon">🧮</span>
+                    <div class="project-preview-overlay">
+                        <a href="https://aryan-scientific-calculator-x82ppnvacltcpkhuucjxpd.streamlit.app/" target="_blank" class="preview-btn">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="https://github.com/usama6513/Aryan-scientific-calculator" target="_blank" class="preview-btn code">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <span class="project-type">Math Tool</span>
+                    <h3>Scientific Calculator</h3>
+                    <p>A powerful scientific calculator with advanced mathematical functions, trigonometry, logarithms, and more for complex calculations.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Streamlit</span>
+                        <span>Mathematics</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 6 -->
+            <div class="project-card reveal">
+                <div class="project-preview" style="background-image: url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=600&q=80');">
+                    <div class="project-image-overlay"></div>
+                    <div class="project-gradient" style="background: linear-gradient(135deg, #ff8c00, #ff2d75);"></div>
+                    <span class="project-icon">📖</span>
+                    <div class="project-preview-overlay">
+                        <a href="https://usama-library-g4ufi3gkxkscznbhbzbnyw.streamlit.app/" target="_blank" class="preview-btn">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="https://github.com/usama6513/usama-library" target="_blank" class="preview-btn code">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <span class="project-type">Web Application</span>
+                    <h3>Digital Library Manager</h3>
+                    <p>A digital library management system for organizing, searching, and managing book collections efficiently.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Streamlit</span>
+                        <span>Database</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 7 -->
+            <div class="project-card reveal">
+                <div class="project-preview" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80');">
+                    <div class="project-image-overlay"></div>
+                    <div class="project-gradient" style="background: linear-gradient(135deg, #7b2ff7, #00f0ff);"></div>
+                    <span class="project-icon">🌱</span>
+                    <div class="project-preview-overlay">
+                        <a href="https://usama-growth-project.streamlit.app/" target="_blank" class="preview-btn">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="https://github.com/usama6513/Usama-growth-project" target="_blank" class="preview-btn code">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <span class="project-type">Growth Mindset</span>
+                    <h3>Growth Mindset Challenge</h3>
+                    <p>An interactive web app designed to help users develop a growth mindset through challenges, tracking, and positive reinforcement.</p>
+                    <div class="project-tech">
+                        <span>Python</span>
+                        <span>Streamlit</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 8 -->
+            <div class="project-card reveal">
+                <div class="project-preview" style="background-image: url('https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80');">
+                    <div class="project-image-overlay"></div>
+                    <div class="project-gradient" style="background: linear-gradient(135deg, #00ff88, #00f0ff);"></div>
+                    <span class="project-icon">&#9889;</span>
+                    <div class="project-preview-overlay">
+                        <a href="https://frontend-theta-one-25.vercel.app" target="_blank" class="preview-btn">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="https://github.com/usama6513/hack2ph3" target="_blank" class="preview-btn code">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+                <div class="project-info">
+                    <span class="project-type">Web Application</span>
+                    <h3>TaskFlow</h3>
+                    <p>A modern task management and workflow organization application built with Next.js for seamless productivity.</p>
+                    <div class="project-tech">
+                        <span>Next.js</span>
+                        <span>TypeScript</span>
+                        <span>Vercel</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Journey / Experience -->
+<section id="journey">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-tag">// My Journey</span>
+            <h2 class="section-title">The <span class="highlight">Path</span> So Far</h2>
+            <p class="section-desc">Key milestones in my journey through AI, mathematics, and technology</p>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2026</div>
+                    <h3>Physical AI & Robotics Textbook</h3>
+                    <p>Authored a comprehensive 13-week curriculum covering ROS 2, NVIDIA Isaac, humanoid robotics, and VLA models with 50+ code examples.</p>
+                </div>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2026</div>
+                    <h3>AI Assignment Solver</h3>
+                    <p>Developed an AI-powered tool leveraging large language models to solve complex assignments with structured reasoning.</p>
+                </div>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2025 - 2026</div>
+                    <h3>Python & Streamlit Apps Suite</h3>
+                    <p>Built and deployed multiple utility apps including scientific calculator, unit converter, password generator, and library manager.</p>
+                </div>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">2025</div>
+                    <h3>AI Agents Specialization</h3>
+                    <p>Focused on building autonomous AI agents capable of reasoning, planning, and executing complex tasks with minimal human intervention.</p>
+                </div>
+            </div>
+            <div class="timeline-item reveal">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="timeline-date">Ongoing</div>
+                    <h3>67+ Open Source Repositories</h3>
+                    <p>Actively contributing to the developer community with 67+ public repositories on GitHub spanning AI, Python, and web development.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="contact">
+    <div class="section-container">
+        <div class="section-header">
+            <span class="section-tag">// Get in Touch</span>
+            <h2 class="section-title">Let's <span class="highlight">Connect</span></h2>
+            <p class="section-desc">Have a project in mind? Let's build something extraordinary together.</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info reveal">
+                <h3>Ready to Collaborate?</h3>
+                <p>
+                    Whether you need an AI agent built, a mathematical model designed,
+                    or a web application developed &mdash; I'm here to bring your vision to life.
+                    Let's create something that makes a difference.
+                </p>
+                <div class="contact-links">
+                    <a href="https://www.linkedin.com/in/usama-sharif-9b903b342" target="_blank" class="contact-link">
+                        <i class="fab fa-linkedin"></i>
+                        <div>
+                            <div class="link-label">LinkedIn</div>
+                            <div class="link-value">Usama Sharif</div>
+                        </div>
+                    </a>
+                    <a href="https://github.com/usama6513" target="_blank" class="contact-link">
+                        <i class="fab fa-github"></i>
+                        <div>
+                            <div class="link-label">GitHub</div>
+                            <div class="link-value">usama6513</div>
+                        </div>
+                    </a>
+                    <a href="https://www.instagram.com/aryan_anjaan65" target="_blank" class="contact-link">
+                        <i class="fab fa-instagram"></i>
+                        <div>
+                            <div class="link-label">Instagram</div>
+                            <div class="link-value">@aryan_anjaan65</div>
+                        </div>
+                    </a>
+                    <a href="https://www.tiktok.com/@aryan36951" target="_blank" class="contact-link">
+                        <i class="fab fa-tiktok"></i>
+                        <div>
+                            <div class="link-label">TikTok</div>
+                            <div class="link-value">@aryan36951</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="social-bar">
+                    <a href="https://www.linkedin.com/in/usama-sharif-9b903b342" target="_blank" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://github.com/usama6513" target="_blank" class="social-icon"><i class="fab fa-github"></i></a>
+                    <a href="https://www.instagram.com/aryan_anjaan65" target="_blank" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.tiktok.com/@aryan36951" target="_blank" class="social-icon"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.facebook.com/share/1Bo3ntgJ8v/" target="_blank" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <div class="contact-form reveal">
+                <form id="contactForm" action="https://formspree.io/f/mdaqglag" method="POST">
+                    <input type="hidden" name="_subject" value="New Portfolio Message!">
+                    <div class="form-group">
+                        <label>Your Name</label>
+                        <input type="text" name="name" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Subject</label>
+                        <input type="text" name="subject" placeholder="What's this about?">
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea name="message" placeholder="Tell me about your project..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        <i class="fas fa-paper-plane"></i> Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AI Chatbot -->
+<button class="chatbot-toggle" id="chatToggle" title="Chat with AI Assistant">
+    <i class="fas fa-robot"></i>
+</button>
+
+<div class="chatbot-window" id="chatWindow">
+    <div class="chatbot-header">
+        <div class="chatbot-avatar"><i class="fas fa-robot"></i></div>
+        <div class="chatbot-header-info">
+            <h4>Usama's AI Assistant</h4>
+            <p><span class="online-dot"></span> Online &mdash; Ask me anything</p>
+        </div>
+    </div>
+    <div class="chatbot-messages" id="chatMessages">
+        <div class="chat-msg bot">
+            Assalam-u-Alaikum! I'm Usama's AI assistant. I know everything about his projects, skills, and portfolio. Ask me anything!
+        </div>
+    </div>
+    <div class="chat-suggestions" id="chatSuggestions">
+        <button onclick="askSuggestion('Who is Usama?')">Who is Usama?</button>
+        <button onclick="askSuggestion('Show me his projects')">Projects</button>
+        <button onclick="askSuggestion('What are his skills?')">Skills</button>
+        <button onclick="askSuggestion('How to contact him?')">Contact</button>
+    </div>
+    <div class="chatbot-input">
+        <input type="text" id="chatInput" placeholder="Ask about Usama..." autocomplete="off">
+        <button onclick="sendChatMessage()" id="chatSendBtn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer>
+    <p>&copy; 2026 Usama Sharif. Crafted with <span class="heart">&hearts;</span> and Intelligence.</p>
+</footer>
+
+<script>
+    // ========== FORMSUBMIT INIT ==========
+
+    // ========== CURSOR RING + DOT ==========
+    const cursorGlow = document.getElementById('cursorGlow');
+    const cursorRing = document.getElementById('cursorRing');
+    const cursorDot = document.getElementById('cursorDot');
+
+    let ringX = 0, ringY = 0, dotX = 0, dotY = 0, mouseX = 0, mouseY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        cursorGlow.style.left = mouseX + 'px';
+        cursorGlow.style.top = mouseY + 'px';
+    });
+
+    function animateCursor() {
+        // Ring follows slower (smooth lag)
+        ringX += (mouseX - ringX) * 0.12;
+        ringY += (mouseY - ringY) * 0.12;
+        cursorRing.style.left = ringX + 'px';
+        cursorRing.style.top = ringY + 'px';
+
+        // Dot follows faster (almost instant)
+        dotX += (mouseX - dotX) * 0.6;
+        dotY += (mouseY - dotY) * 0.6;
+        cursorDot.style.left = dotX + 'px';
+        cursorDot.style.top = dotY + 'px';
+
+        requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    // Hover effect on interactive elements
+    const hoverTargets = document.querySelectorAll('a, button, .project-card, .skill-card, .stat-card, .contact-link, .social-icon, .timeline-content, .nav-links a, input, textarea');
+    hoverTargets.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursorRing.classList.add('hover-active');
+            cursorDot.classList.add('hover-active');
+        });
+        el.addEventListener('mouseleave', () => {
+            cursorRing.classList.remove('hover-active');
+            cursorDot.classList.remove('hover-active');
+        });
+    });
+
+    // ========== NAVBAR SCROLL ==========
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // ========== HAMBURGER MENU ==========
+    function toggleMenu() {
+        document.getElementById('navLinks').classList.toggle('active');
+    }
+    function closeMenu() {
+        document.getElementById('navLinks').classList.remove('active');
+    }
+
+    // ========== SCROLL REVEAL ==========
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+            }
+        });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // ========== PARTICLES ==========
+    const particleContainer = document.getElementById('particles');
+    for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + 'vw';
+        particle.style.animationDelay = Math.random() * 8 + 's';
+        particle.style.animationDuration = (Math.random() * 5 + 6) + 's';
+        particleContainer.appendChild(particle);
+    }
+
+    // ========== SMOOTH ACTIVE NAV ==========
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const top = section.offsetTop - 100;
+            if (scrollY >= top) current = section.getAttribute('id');
+        });
+        navLinks.forEach(link => {
+            link.style.color = '';
+            if (link.getAttribute('href') === '#' + current) {
+                link.style.color = 'var(--primary)';
+            }
+        });
+    });
+
+    // ========== TYPING EFFECT ==========
+    const roles = ['AI Agents Specialist', 'Mathematician', 'Python Developer', 'Robotics Enthusiast'];
+    let roleIndex = 0, charIndex = 0, isDeleting = false;
+    const typedEl = document.querySelector('.hero-subtitle strong');
+
+    function typeEffect() {
+        const current = roles[roleIndex];
+        if (isDeleting) {
+            typedEl.textContent = current.substring(0, charIndex--);
+        } else {
+            typedEl.textContent = current.substring(0, charIndex++);
+        }
+
+        if (!isDeleting && charIndex === current.length + 1) {
+            setTimeout(() => { isDeleting = true; typeEffect(); }, 2000);
+            return;
+        }
+        if (isDeleting && charIndex < 0) {
+            isDeleting = false;
+            roleIndex = (roleIndex + 1) % roles.length;
+        }
+
+        setTimeout(typeEffect, isDeleting ? 50 : 100);
+    }
+    setTimeout(typeEffect, 1500);
+
+    // ========== CONTACT FORM (Formspree) ==========
+    document.getElementById('contactForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        btn.disabled = true;
+
+        const formData = new FormData(e.target);
+
+        fetch('https://formspree.io/f/mdaqglag', {
+            method: 'POST',
+            body: formData,
+            headers: { 'Accept': 'application/json' }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.error || 'Submission failed');
+                    });
+                }
+                return response.json();
+            })
+            .then(() => {
+                btn.innerHTML = '<i class="fas fa-check"></i> Message Sent Successfully!';
+                btn.style.background = 'linear-gradient(135deg, #00ff88, #00f0ff)';
+                e.target.reset();
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                    btn.disabled = false;
+                }, 4000);
+            })
+            .catch(err => {
+                console.error('Formspree error:', err.message);
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Error: ' + err.message;
+                btn.style.background = 'linear-gradient(135deg, #ff2d75, #ff8c00)';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '';
+                    btn.disabled = false;
+                }, 5000);
+            });
+    });
+
+    // ========== COUNTER ANIMATION ==========
+    const statNumbers = document.querySelectorAll('.stat-number');
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = entry.target;
+                const final = parseInt(target.textContent);
+                let count = 0;
+                const increment = Math.ceil(final / 40);
+                const timer = setInterval(() => {
+                    count += increment;
+                    if (count >= final) {
+                        target.textContent = target.dataset.suffix ? final + target.dataset.suffix : final + '+';
+                        clearInterval(timer);
+                    } else {
+                        target.textContent = count;
+                    }
+                }, 40);
+                counterObserver.unobserve(target);
+            }
+        });
+    }, { threshold: 0.5 });
+
+    statNumbers.forEach(el => counterObserver.observe(el));
+
+    // ========== AI CHATBOT ==========
+    const chatToggle = document.getElementById('chatToggle');
+    const chatWindow = document.getElementById('chatWindow');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const chatSuggestions = document.getElementById('chatSuggestions');
+
+    chatToggle.addEventListener('click', () => {
+        chatWindow.classList.toggle('open');
+        chatToggle.classList.toggle('active');
+        if (chatWindow.classList.contains('open')) {
+            chatToggle.innerHTML = '<i class="fas fa-times"></i>';
+            chatInput.focus();
+        } else {
+            chatToggle.innerHTML = '<i class="fas fa-robot"></i>';
+        }
+    });
+
+    chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && chatInput.value.trim()) sendChatMessage();
+    });
+
+    function askSuggestion(text) {
+        chatInput.value = text;
+        sendChatMessage();
+    }
+
+    function sendChatMessage() {
+        const msg = chatInput.value.trim();
+        if (!msg) return;
+        chatSuggestions.style.display = 'none';
+        addMessage(msg, 'user');
+        chatInput.value = '';
+
+        // Show typing indicator
+        const typing = document.createElement('div');
+        typing.className = 'chat-typing';
+        typing.id = 'typingIndicator';
+        typing.innerHTML = '<span></span><span></span><span></span>';
+        chatMessages.appendChild(typing);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        setTimeout(() => {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) indicator.remove();
+            const reply = getBotReply(msg);
+            addMessage(reply, 'bot');
+        }, 800 + Math.random() * 700);
+    }
+
+    function addMessage(text, type) {
+        const div = document.createElement('div');
+        div.className = `chat-msg ${type}`;
+        div.innerHTML = text;
+        chatMessages.appendChild(div);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // ========== CHATBOT KNOWLEDGE BASE ==========
+    const portfolio = {
+        name: "Usama Sharif",
+        title: "AI Agents Specialist & Mathematician",
+        bio: "Usama Sharif is an AI Agents Specialist and Mathematician who builds intelligent, autonomous systems. He combines deep mathematical foundations with cutting-edge AI to create solutions that think. He has 67+ GitHub repositories and multiple deployed projects.",
+        skills: [
+            "AI Agents & Automation (LLMs, Prompt Engineering, Autonomous Agents)",
+            "Mathematics & Computation (Calculus, Linear Algebra, Statistics)",
+            "Python Development (Streamlit, Pandas, NumPy)",
+            "Web Development (HTML/CSS, JavaScript, TypeScript, Next.js)",
+            "Robotics & Physical AI (ROS 2, Gazebo, NVIDIA Isaac, Humanoid Robotics)",
+            "Technical Education (Course Design, Technical Writing, Curriculum)"
+        ],
+        projects: {
+            "ai assignment solver": {
+                desc: "An intelligent AI-powered tool that helps solve complex assignments using advanced language models and structured reasoning.",
+                tech: "Next.js, AI/LLM, Vercel",
+                link: "https://assignment-solver-pink.vercel.app"
+            },
+            "physical ai book": {
+                desc: "A comprehensive 13-week online textbook covering ROS 2, simulation, NVIDIA Isaac, reinforcement learning, and humanoid robotics with 50+ code examples.",
+                tech: "Docusaurus, ROS 2, NVIDIA Isaac, Reinforcement Learning",
+                link: "https://usama6513.github.io/physical-ai-book/"
+            },
+            "unit converter": {
+                desc: "A sleek, fast unit conversion tool built with Python & Streamlit for converting between various measurement units instantly.",
+                tech: "Python, Streamlit",
+                link: "https://usama-converter-unit-xba4b6a8y7dj6ybxhw2yqv.streamlit.app/"
+            },
+            "password generator": {
+                desc: "A secure, customizable password generator that creates strong, unbreakable passwords with various complexity options.",
+                tech: "Python, Streamlit, Security",
+                link: "https://password-uydk9gh8v4ynuphvvyzuak.streamlit.app/"
+            },
+            "scientific calculator": {
+                desc: "A powerful scientific calculator with advanced mathematical functions, trigonometry, logarithms, and more.",
+                tech: "Python, Streamlit, Mathematics",
+                link: "https://aryan-scientific-calculator-x82ppnvacltcpkhuucjxpd.streamlit.app/"
+            },
+            "library manager": {
+                desc: "A digital library management system for organizing, searching, and managing book collections efficiently.",
+                tech: "Python, Streamlit, Database",
+                link: "https://usama-library-g4ufi3gkxkscznbhbzbnyw.streamlit.app/"
+            },
+            "growth mindset": {
+                desc: "An interactive web app designed to help users develop a growth mindset through challenges, tracking, and positive reinforcement.",
+                tech: "Python, Streamlit",
+                link: "https://usama-growth-project.streamlit.app/"
+            },
+            "taskflow": {
+                desc: "A modern task management and workflow organization application built with Next.js for seamless productivity.",
+                tech: "Next.js, TypeScript, Vercel",
+                link: "https://frontend-theta-one-25.vercel.app"
+            }
+        },
+        social: {
+            linkedin: "https://www.linkedin.com/in/usama-sharif-9b903b342",
+            github: "https://github.com/usama6513",
+            instagram: "https://www.instagram.com/aryan_anjaan65",
+            tiktok: "https://www.tiktok.com/@aryan36951",
+            facebook: "https://www.facebook.com/share/1Bo3ntgJ8v/"
+        }
+    };
+
+    function getBotReply(input) {
+        const q = input.toLowerCase().trim();
+
+        // Greetings
+        if (/^(hi|hello|hey|assalam|salam|aoa|greetings|howdy|sup|kya hal)/i.test(q)) {
+            return `Wa-Alaikum-Assalam! Welcome! I'm Usama's AI assistant. I can tell you about his <strong>projects</strong>, <strong>skills</strong>, <strong>experience</strong>, or how to <strong>contact</strong> him. What would you like to know?`;
+        }
+
+        // Who is Usama
+        if (/who (is|are)|about (usama|him|you)|tell me about|introduction|intro/i.test(q)) {
+            return `<strong>${portfolio.name}</strong> is an ${portfolio.title}. ${portfolio.bio}
+            <div class="msg-links">
+                <a href="${portfolio.social.github}" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="${portfolio.social.linkedin}" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            </div>`;
+        }
+
+        // Skills
+        if (/skill|expertise|can he do|technology|tech stack|what.*know|abilities|capable/i.test(q)) {
+            let skillList = portfolio.skills.map(s => `  &bull; ${s}`).join('<br>');
+            return `Here are <strong>Usama's core skills:</strong><br><br>${skillList}`;
+        }
+
+        // All Projects
+        if (/projects|portfolio|work|show.*project|all project|what.*built|what.*made/i.test(q)) {
+            let projList = '';
+            for (const [name, p] of Object.entries(portfolio.projects)) {
+                projList += `<strong>${name.charAt(0).toUpperCase() + name.slice(1)}</strong> &mdash; ${p.desc.substring(0, 70)}...<br>`;
+            }
+            return `Usama has <strong>8 deployed projects</strong> and <strong>67+ repos</strong>:<br><br>${projList}
+            <br>Ask about any specific project for details and live link!`;
+        }
+
+        // Specific project lookups
+        for (const [key, proj] of Object.entries(portfolio.projects)) {
+            if (q.includes(key) || (key.split(' ').length > 1 && key.split(' ').some(w => w.length > 3 && q.includes(w)))) {
+                return `<strong>${key.charAt(0).toUpperCase() + key.slice(1)}</strong><br><br>${proj.desc}<br><br><strong>Tech:</strong> ${proj.tech}
+                <div class="msg-links">
+                    <a href="${proj.link}" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                </div>`;
+            }
+        }
+
+        // Contact
+        if (/contact|reach|email|hire|connect|social|linkedin|github|instagram|tiktok|facebook|how.*reach|get.*touch/i.test(q)) {
+            return `You can reach <strong>Usama</strong> through:
+            <div class="msg-links">
+                <a href="${portfolio.social.linkedin}" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="${portfolio.social.github}" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                <a href="${portfolio.social.instagram}" target="_blank"><i class="fab fa-instagram"></i> Instagram</a>
+                <a href="${portfolio.social.tiktok}" target="_blank"><i class="fab fa-tiktok"></i> TikTok</a>
+                <a href="${portfolio.social.facebook}" target="_blank"><i class="fab fa-facebook"></i> Facebook</a>
+            </div>
+            Or use the <a href="#contact" style="color:var(--primary);" onclick="document.getElementById('chatToggle').click()">contact form</a> on this page!`;
+        }
+
+        // Education / Courses
+        if (/education|course|learn|teach|book|textbook|curriculum|student|study/i.test(q)) {
+            const book = portfolio.projects["physical ai book"];
+            return `Usama authored a <strong>13-week comprehensive textbook</strong> on Physical AI & Humanoid Robotics covering:<br><br>
+            &bull; ROS 2 Fundamentals (Weeks 1-5)<br>
+            &bull; Simulation with Gazebo & Unity (Weeks 6-7)<br>
+            &bull; NVIDIA Isaac & Reinforcement Learning (Weeks 8-10)<br>
+            &bull; VLA & Humanoid Robotics (Weeks 11-13)<br>
+            &bull; Capstone Project<br><br>
+            Includes <strong>50+ code examples</strong>!
+            <div class="msg-links">
+                <a href="${book.link}" target="_blank"><i class="fas fa-book"></i> Read the Book</a>
+            </div>`;
+        }
+
+        // AI / Agents
+        if (/ai agent|agent|artificial intelligence|machine learning|llm|automation|autonomous/i.test(q)) {
+            return `Usama specializes in <strong>AI Agents & Automation</strong>! He builds autonomous AI agents that can reason, plan, and execute complex tasks. His expertise includes:<br><br>
+            &bull; Large Language Models (LLMs)<br>
+            &bull; Prompt Engineering<br>
+            &bull; Autonomous Agent Architecture<br>
+            &bull; AI-Powered Applications<br><br>
+            Check out his <strong>AI Assignment Solver</strong>:
+            <div class="msg-links">
+                <a href="${portfolio.projects["ai assignment solver"].link}" target="_blank"><i class="fas fa-robot"></i> AI Solver</a>
+            </div>`;
+        }
+
+        // Mathematics
+        if (/math|calculus|algebra|statistics|computation|equation|formula/i.test(q)) {
+            return `Usama is a passionate <strong>Mathematician</strong> with expertise in:<br><br>
+            &bull; Calculus & Analysis<br>
+            &bull; Linear Algebra<br>
+            &bull; Statistics & Probability<br>
+            &bull; Scientific Computing<br><br>
+            He built a <strong>Scientific Calculator</strong> that handles advanced math:
+            <div class="msg-links">
+                <a href="${portfolio.projects["scientific calculator"].link}" target="_blank"><i class="fas fa-calculator"></i> Calculator</a>
+            </div>`;
+        }
+
+        // Robotics
+        if (/robot|ros|gazebo|nvidia|isaac|humanoid|physical ai|sim.*real/i.test(q)) {
+            return `Usama has deep expertise in <strong>Robotics & Physical AI</strong>:<br><br>
+            &bull; ROS 2 Framework<br>
+            &bull; Gazebo & Unity Simulation<br>
+            &bull; NVIDIA Isaac Platform<br>
+            &bull; Humanoid Kinematics & Locomotion<br>
+            &bull; Sim-to-Real Transfer<br>
+            &bull; GPT-integrated Voice Control<br><br>
+            He wrote an entire textbook on this:
+            <div class="msg-links">
+                <a href="${portfolio.projects["physical ai book"].link}" target="_blank"><i class="fas fa-book"></i> Physical AI Book</a>
+            </div>`;
+        }
+
+        // Python
+        if (/python|streamlit|pandas|numpy|coding|programming|code/i.test(q)) {
+            return `Usama is a proficient <strong>Python Developer</strong> who has built multiple apps:<br><br>
+            &bull; Scientific Calculator<br>
+            &bull; Unit Converter<br>
+            &bull; Password Generator<br>
+            &bull; Library Manager<br>
+            &bull; Growth Mindset Challenge<br><br>
+            All deployed on Streamlit Cloud! Ask about any specific app for the live link.`;
+        }
+
+        // GitHub
+        if (/github|repo|repository|open source|code|git/i.test(q)) {
+            return `Usama has <strong>67+ public repositories</strong> on GitHub covering AI, Python, and web development.
+            <div class="msg-links">
+                <a href="${portfolio.social.github}" target="_blank"><i class="fab fa-github"></i> Visit GitHub Profile</a>
+            </div>`;
+        }
+
+        // Web development
+        if (/web|html|css|javascript|typescript|next|frontend|website|vercel/i.test(q)) {
+            return `Usama builds modern web applications using:<br><br>
+            &bull; HTML5, CSS3 (responsive design)<br>
+            &bull; JavaScript & TypeScript<br>
+            &bull; Next.js Framework<br>
+            &bull; Vercel Deployment<br><br>
+            Check out his web projects:
+            <div class="msg-links">
+                <a href="${portfolio.projects["taskflow"].link}" target="_blank">TaskFlow</a>
+                <a href="${portfolio.projects["ai assignment solver"].link}" target="_blank">AI Solver</a>
+            </div>`;
+        }
+
+        // Hire / Available
+        if (/hire|available|freelance|work.*together|collaborate|job|opportunity/i.test(q)) {
+            return `Yes! Usama is <strong>available for projects!</strong> He can help with:<br><br>
+            &bull; Building AI Agents & Automation<br>
+            &bull; Python Application Development<br>
+            &bull; Web Development (Next.js)<br>
+            &bull; Mathematical Modeling<br>
+            &bull; Technical Course Creation<br><br>
+            Reach out:
+            <div class="msg-links">
+                <a href="${portfolio.social.linkedin}" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="#contact" onclick="document.getElementById('chatToggle').click()"><i class="fas fa-envelope"></i> Contact Form</a>
+            </div>`;
+        }
+
+        // Thanks
+        if (/thank|thanks|shukriya|jazak|appreciated/i.test(q)) {
+            return `You're welcome! JazakAllah! If you have more questions about Usama's work, feel free to ask anytime. Have a great day!`;
+        }
+
+        // Default fallback
+        return `Great question! I can help you with information about:<br><br>
+        &bull; <strong>Usama's background</strong> &mdash; "Who is Usama?"<br>
+        &bull; <strong>His skills</strong> &mdash; "What are his skills?"<br>
+        &bull; <strong>Projects</strong> &mdash; "Show me his projects" or ask about a specific one<br>
+        &bull; <strong>Contact info</strong> &mdash; "How to contact him?"<br>
+        &bull; <strong>AI expertise</strong> &mdash; "Tell me about his AI work"<br>
+        &bull; <strong>Robotics</strong> &mdash; "Tell me about his robotics work"<br><br>
+        Try asking something specific!`;
+    }
+</script>
+
+</body>
+</html>
